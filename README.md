@@ -1,5 +1,5 @@
 # talk-to-it
-A website that lets you talk to it!
+Real time chatting using WebSockets!
 
 ## Prerequisites
 
