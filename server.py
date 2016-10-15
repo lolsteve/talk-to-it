@@ -23,7 +23,7 @@ class ServerProtocol(WebSocketServerProtocol):
         global connected
         print(self.id.hex, 'sent', payload)
         text = payload.decode('utf8')
-        new_payload = {'id': self.id.hex, 'text': text}
+        new_payload = {'id': self.id.hex, 'text': text, 'users': len(connected)}
         for socket in connected:
             if socket is not self:
                 socket.sendMessage(json.dumps(new_payload, ensure_ascii = False).encode('utf8'))
