@@ -1,8 +1,10 @@
 var wsUri = "ws://localhost:9000";
 var output;
+var connectionElem;
 
 function init() {
   output = document.getElementById("output");
+  connectionElem = document.getElementById("connectionInfo");
   initWebSocket();
 }
 
@@ -15,13 +17,11 @@ function initWebSocket() {
 }
 
 function onOpen(evt) {
-  var elem = document.getElementById(0);
-  elem.innerHTML = "CONNECTED";
+  connectionElem.innerHTML = "CONNECTED";
 }
 
 function onClose(evt) {
-  var elem = document.getElementById(0);
-  elem.innerHTML = "DISCONNECTED";
+  connectionElem.innerHTML = "DISCONNECTED";
 }
 
 function onMessage(evt) {
