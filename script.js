@@ -18,6 +18,7 @@ function initWebSocket() {
 
 function onOpen(evt) {
   connectionElem.innerHTML = "CONNECTED";
+  websocket.send('aa');
 }
 
 function onClose(evt) {
@@ -26,11 +27,20 @@ function onClose(evt) {
 
 function onMessage(evt) {
   var msg = JSON.parse(evt.data);
-  var id = msg.id;
-  var text = msg.text;
-  var users = msg.users;
-  writeToScreen(id, text);
-  updateUsers(users);
+
+  switch(msg.type) {
+    case 'message':
+      var id = msg.id;
+      var text = msg.text;
+      writeToScreen(id, text);
+      break;
+    case 'users':
+      var users = msg.users;
+      updateUsers(users);
+      break;
+    default:
+      console.log('Unknown message type' + msg.type);
+  }
 }
 
 function onError(evt) {
@@ -51,7 +61,18 @@ function writeToScreen(id, message) {
     elem.style.color = getRandomColour();
     output.appendChild(elem);
   }
+  var originalLength = elem.innerHTML.length
   elem.innerHTML = elem.innerHTML + message;
+  var lengthDiff = elem.innerHTML.length - originalLength
+  setTimeout(function(){ removeFromScreen(id, lengthDiff); }, 5000);
+}
+
+function removeFromScreen(id, num) {
+  var elem = document.getElementById(id);
+  elem.innerHTML = elem.innerHTML.substring(num);
+  if(elem.innerHTML === '' && id != 1) {
+    output.removeChild(elem);
+  }
 }
 
 function updateUsers(users) {
@@ -73,4 +94,4 @@ function getRandomColour() {
 
 window.addEventListener("load", init, false);
 
-window,addEventListener("keypress", keyListener, false);
+window.addEventListener("keypress", keyListener, false);
