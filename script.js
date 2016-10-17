@@ -1,8 +1,10 @@
 var wsUri = "ws://localhost:9000";
 var output;
+var connectionElem;
 
 function init() {
   output = document.getElementById("output");
+  connectionElem = document.getElementById("connectionInfo");
   initWebSocket();
 }
 
@@ -15,20 +17,20 @@ function initWebSocket() {
 }
 
 function onOpen(evt) {
-  var elem = document.getElementById(0);
-  elem.innerHTML = "CONNECTED";
+  connectionElem.innerHTML = "CONNECTED";
 }
 
 function onClose(evt) {
-  var elem = document.getElementById(0);
-  elem.innerHTML = "DISCONNECTED";
+  connectionElem.innerHTML = "DISCONNECTED";
 }
 
 function onMessage(evt) {
   var msg = JSON.parse(evt.data);
   var id = msg.id;
   var text = msg.text;
+  var users = msg.users;
   writeToScreen(id, text);
+  updateUsers(users);
 }
 
 function onError(evt) {
@@ -50,6 +52,10 @@ function writeToScreen(id, message) {
     output.appendChild(elem);
   }
   elem.innerHTML = elem.innerHTML + message;
+}
+
+function updateUsers(users) {
+  connectionElem.innerHTML = "USERS: " + users;
 }
 
 function keyListener(event) {

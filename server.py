@@ -11,7 +11,6 @@ class ServerProtocol(WebSocketServerProtocol):
         connected.add(self)
         self.id = uuid4()
         print("Connection from: {}".format(request.peer))
-        print(self)
 
     def onClose(self, wasClean, code, reason):
         global connected
@@ -19,15 +18,15 @@ class ServerProtocol(WebSocketServerProtocol):
         print("Connection close: {}".format(reason))
 
     def onMessage(self, payload, isBinary):
+        if len(payload) > 1:
+            return
         global connected
         print(self.id.hex, 'sent', payload)
         text = payload.decode('utf8')
-        new_payload = {'id': self.id.hex, 'text': text}
+        new_payload = {'id': self.id.hex, 'text': text, 'users': len(connected)}
         for socket in connected:
             if socket is not self:
                 socket.sendMessage(json.dumps(new_payload, ensure_ascii = False).encode('utf8'))
-                #socket.sendMessage(payload, isBinary)
-        #self.sendMessage(payload, isBinary)
 
 if __name__ == '__main__':
 
