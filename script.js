@@ -67,4 +67,4 @@ function getRandomColour() {
 
 window.addEventListener("load", init, false);
 
-window,addEventListener("keypress", keyListener, false);
+window.addEventListener("keypress", keyListener, false);
