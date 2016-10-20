@@ -80,7 +80,13 @@ function updateUsers(users) {
 }
 
 function keyListener(event) {
-  doSend(event.key);
+  if (event.key !== undefined) {
+    doSend(event.key);
+  } else if (event.keyCode !== undefined) {
+    doSend(String.fromCharCode(event.keyCode));
+  } else {
+    console.log(event);
+  }
 }
 
 function getRandomColour() {
