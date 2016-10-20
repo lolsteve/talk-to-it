@@ -62,7 +62,8 @@ function writeToScreen(id, message) {
     output.appendChild(elem);
   }
   var originalLength = elem.innerHTML.length
-  elem.innerHTML = elem.innerHTML + message;
+  var sanatized = document.createTextNode(message);
+  elem.appendChild(sanatized);
   var lengthDiff = elem.innerHTML.length - originalLength
   setTimeout(function(){ removeFromScreen(id, lengthDiff); }, 5000);
 }
